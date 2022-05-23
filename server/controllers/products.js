@@ -18,3 +18,8 @@ export const getProduct = (req, res) => {
 
     res.send(singleProduct)
 }
+
+export const deleteProduct = (req, res) => {
+    products = products.filter((product) => product.id !== req.params.id)
+    res.send("Produto removido com sucesso.")
+}
