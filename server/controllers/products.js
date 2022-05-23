@@ -23,3 +23,12 @@ export const deleteProduct = (req, res) => {
     products = products.filter((product) => product.id !== req.params.id)
     res.send("Produto removido com sucesso.")
 }
+
+export const updateProduct = (req, res) => {
+    const product = products.find((product) => product.id === req.params.id);
+    product.name = req.body.name
+    product.quantity = req.body.quantity
+    product.price = req.body.price
+
+    res.send("Dados do produto atualizados.")
+}
