@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from 'react-toastify';
 import "./AddEdit.css"
 
 const initialState = {
@@ -13,8 +15,26 @@ export default function AddEdit() {
 
     const { name, quantity, price } = state;
 
+    const addItem = async (data) => {
+        const response = await axios.post("http://localhost:3333/product", data)
+        if(response.status === 200) {
+            toast.success(response.data)
+        }
+    }
+
+    const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if(!name || !quantity || !price) {
+            toast.error("Por favor, preencha todos os campos.")
+        } else {
+            addItem(state);
+            setTimeout(() => navigate("/"), 1000)
+            ;
+        }
+
     }
 
     const handleInputChange = (e) => {
@@ -30,8 +50,9 @@ export default function AddEdit() {
                 <input type="text" id="name" name="name" placeholder="Insira o nome do produto" onChange={handleInputChange} value={name} />
                 <label htmlFor="quantity">Quantidade (em Quilos)</label>
                 <input type="number" id="quantity" name="quantity" placeholder="Quantidade em quilos (KG)" onChange={handleInputChange} value={quantity} />
-                <label htmlFor="name">Preço</label>
+                <label htmlFor="price">Preço</label>
                 <input type="number" id="price" name="price" placeholder="Insira o preço do produto" onChange={handleInputChange} value={price} />
+                <input type="submit" value="Registrar"></input>
             </form>
         </div>
     )

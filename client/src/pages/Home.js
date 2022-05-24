@@ -37,8 +37,8 @@ export default function Home() {
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{item.name}</td>
-                                <td>{item.quantity} Kg</td>
-                                <td>{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{parseFloat(item.quantity)} Kg</td>
+                                <td>{parseFloat(item.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>
                                     <Link to={`/update/${item.id}`}>
                                         <button className="btn btn-edit">Editar</button>
