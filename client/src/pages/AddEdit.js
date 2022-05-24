@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import "./AddEdit.css"
 
@@ -22,7 +22,29 @@ export default function AddEdit() {
         }
     }
 
+    const updateItem = async (data, id) => {
+        const response = await axios.put(`http://localhost:3333/product/${id}`, data)
+        if(response.status === 200) {
+            toast.success(response.data)
+        }
+    }
+
     const navigate = useNavigate()
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        if(id) {
+            getSingleItem(id)
+        }
+    }, [id])
+
+    const getSingleItem = async (id) => {
+        const response = await axios.get(`http://localhost:3333/product/${id}`)
+        if(response.status === 200) {
+            setState({...response.data[0]})
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +52,11 @@ export default function AddEdit() {
         if(!name || !quantity || !price) {
             toast.error("Por favor, preencha todos os campos.")
         } else {
-            addItem(state);
+            if(!id) {
+                addItem(state);
+            } else {
+                updateItem(state, id)
+            }
             setTimeout(() => navigate("/"), 1000)
             ;
         }
@@ -52,7 +78,7 @@ export default function AddEdit() {
                 <input type="number" step="0.01" id="quantity" name="quantity" placeholder="Use ponto (.) para números quebrados" onChange={handleInputChange} value={quantity} />
                 <label htmlFor="price">Preço</label>
                 <input type="number" step="0.01" id="price" name="price" placeholder="Use ponto (.) para números quebrados" onChange={handleInputChange} value={price} />
-                <input type="submit" value="Registrar"></input>
+                <input type="submit" value={id ? "Editar" : "Registrar"}></input>
             </form>
         </div>
     )
