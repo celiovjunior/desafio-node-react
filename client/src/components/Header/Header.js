@@ -3,7 +3,16 @@ import { Link, useLocation } from 'react-router-dom';
 import "./Header.css";
 
 export default function Header() {
-    const [activeTab, setActiveTab] = ("Home");
+    const [activeTab, setActiveTab] = useState("Home");
+
+    const location = useLocation();
+    useEffect(() => {
+        if(location.pathname === "/") {
+            setActiveTab("Home")
+        } else if (location.pathname === "/add") {
+            setActiveTab("AddProduct")
+        }
+    }, [location])
 
     return(
         <div className="header">
