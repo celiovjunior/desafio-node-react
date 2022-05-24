@@ -49,9 +49,9 @@ export default function AddEdit() {
                 <label htmlFor="name">Nome do produto</label>
                 <input type="text" id="name" name="name" placeholder="Insira o nome do produto" onChange={handleInputChange} value={name} />
                 <label htmlFor="quantity">Quantidade (em Quilos)</label>
-                <input type="number" id="quantity" name="quantity" placeholder="Quantidade em quilos (KG)" onChange={handleInputChange} value={quantity} />
+                <input type="number" step="0.01" id="quantity" name="quantity" placeholder="Use ponto (.) para números quebrados" onChange={handleInputChange} value={quantity} />
                 <label htmlFor="price">Preço</label>
-                <input type="number" id="price" name="price" placeholder="Insira o preço do produto" onChange={handleInputChange} value={price} />
+                <input type="number" step="0.01" id="price" name="price" placeholder="Use ponto (.) para números quebrados" onChange={handleInputChange} value={price} />
                 <input type="submit" value="Registrar"></input>
             </form>
         </div>

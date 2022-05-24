@@ -2,22 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "./Home.css";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function Home() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        getUsers();
+        getProducts();
     }, [])
 
-    const getUsers = async () => {
+    const getProducts = async () => {
         const response = await axios.get("http://localhost:3333/products")
         if(response.status === 200) {
             setData(response.data);
         }
     }
 
-    console.log("data => ", data)
+    const onDeleteItem = async (id) => {
+        if(window.confirm("Tem certeza que deseja deletar este item?")) {
+            const response = await axios.delete(`http://localhost:3333/product/${id}`)
+            if(response.status === 200) {
+                toast.success(response.data)
+                getProducts();
+            }
+        }
+    }
 
     return(
         <div>
@@ -43,7 +52,7 @@ export default function Home() {
                                     <Link to={`/update/${item.id}`}>
                                         <button className="btn btn-edit">Editar</button>
                                     </Link>
-                                    <button className="btn btn-delete">Deletar</button>
+                                    <button className="btn btn-delete" onClick={() => onDeleteItem(item.id)}>Deletar</button>
                                 </td>
                             </tr>
                         )
